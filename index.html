@@ -49,14 +49,35 @@
           <button ng-click="editGrumble = !editGrumble" class="new">Cancel</button>
         </form>
 
-        <form class="commentForm">
-          <label>Author Name:</label>
-          <input type="text" name="authorName">
-          <label>Content:</label>
-          <input type="text" name="content">
-          <button>Submit</button>
-        </form>
-        <div class="comments"></div>
+        <div ng-controller="commentsController as commentsCtrl">
+          <h3>Comments</h3>
+          <div class="addComment">
+            <h4>Add New Comment</h4>
+            <form class="commentForm" ng-submit="commentsCtrl.create(grumble)">
+              <label>Author Name:</label>
+              <input type="text" name="author" ng-model="grumble.commentAuthor">
+              <label>Content:</label>
+              <input type="text" name="content" ng-model="grumble.commentContent">
+              <button>Submit</button>
+            </form>
+          </div>
+          <div class="comments" ng-repeat="comment in grumble.comments">
+            <div class="comment">
+              <div ng-show="!editComment">
+                <p>Comment by {{comment.author}}: {{comment.content}}</p>
+              </div>
+              <button class="editComment" ng-click="commentsCtrl.edit(grumble, $index); editComment = !editComment">Edit Comment</button>
+              <form ng-show="editComment" name="commentsCtrl.commentForm" class='commentForm'>
+                <label>Author Name:</label>
+                <input type="text" name="author" ng-model="grumble.commentAuthor">
+                <label>Content:</label>
+                <input type="text" name="content" ng-model="grumble.commentContent">
+                <button class="new" ng-click="commentsCtrl.update(grumble, $index); editComment = !editComment">Save</button>
+                <button ng-click="editComment = !editComment" class="new">Cancel</button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
